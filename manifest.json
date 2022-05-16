@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "asoul_listener",
+    "description": "献给枝江的最后礼物",
+    "version": "1.0",
+    "icons": {
+        "127": "images/big.png",
+        "16": "images/small.png"
+    },
+    "action": {
+        "default_icon": "images/big.png",
+        "default_popup": "popup.html"
+    }
+}
