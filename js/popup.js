@@ -10,7 +10,7 @@ function init(count, tab) {
     let preload = $("<div class='preload' style='text-align:center;margin-top:80px'>加载中...</div>")
     $('body').append(preload)
     // 发请求
-    axios.get(`http://42.192.183.61/${tab}.json`).then((result) => {
+    axios.get(`http://150.158.164.18/${tab}.json`).then((result) => {
         $('.preload').remove()
         let data = result.data
         let length = count * 12 + 12
@@ -30,32 +30,34 @@ function init(count, tab) {
                 $('.text')[i].children[1].append(data[i].item.content)
             // 分析时间戳出现的不同位置
             var time, index
+            // 视频
             if (data[i].ctime)
                 time = dateTransForm(data[i].ctime)
+            // 文字加图片动态
             else if (data[i].item.upload_time)
                 time = dateTransForm(data[i].item.upload_time)
+            // 纯文字动态
             else if (data[i].item.timestamp)
                 time = dateTransForm(data[i].item.timestamp)
+            // 转发动态
             else {
                 index = data[i].origin.indexOf('timestamp')
                 if (index != '-1') {
                     index = index + 12
                     time = data[i].origin.substring(index, index + 10)
-                    time = dateTransForm(time)
                 }
                 else {
                     index = data[i].origin.indexOf('ctime')
                     if (index != '-1') {
                         index = index + 7
                         time = data[i].origin.substring(index, index + 10)
-                        time = '原视频发布时间：' + dateTransForm(time)
                     }
                     else {
                         index = data[i].origin.indexOf('upload_time') + 13
                         time = data[i].origin.substring(index, index + 10)
-                        time = dateTransForm(time)
                     }
                 }
+                time = '原动态发布时间：' + dateTransForm(time)
             }
             // 追加时间
             $('.text')[i].children[2].append(time)
@@ -88,7 +90,6 @@ function windowOnScroll(thisE) {
         let scrollTop = Math.ceil(Number($(window).scrollTop()));
         let heightMinus = Number($(document).height() - $(window).height());
         if (scrollTop == heightMinus && count <= 6) {
-            console.log(count);
             //每次滚动到底部,更新数据
             if (count < 6)
                 count = init(count, tab)
